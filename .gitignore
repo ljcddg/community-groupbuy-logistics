@@ -1,0 +1,35 @@
+# ===== Java / Maven =====
+target/
+!.mvn/wrapper/maven-wrapper.jar
+
+# ===== IDE =====
+.idea/
+*.iml
+*.ipr
+*.iws
+.run/
+.vscode/
+.settings/
+.project
+.classpath
+
+# ===== 日志 / 运行时产物 =====
+logs/
+*.log
+*.log.gz
+nohup.out
+
+# ===== Vue 前端 =====
+logistics-web/node_modules/
+logistics-web/dist/
+
+# ===== 系统文件 =====
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ===== WorkBuddy 本地数据 =====
+.workbuddy/
+
+# ===== 面试文档（仅本地保留，不进公开仓库） =====
+docs/

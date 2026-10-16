@@ -1,0 +1,222 @@
+/* ============================================================
+   社区团购物流配送 · 业务流演示
+   设计取向：干净的企业后台风。克制的配色、清晰的层级、
+   数字与 ID 用等宽字体。不使用渐变/阴影堆砌。
+   ============================================================ */
+
+:root {
+  --bg: #f5f6f8;
+  --surface: #ffffff;
+  --border: #dfe3e8;
+  --border-strong: #c7ced6;
+  --text: #1c2128;
+  --text-sub: #656d76;
+  --text-mute: #8b949e;
+  --primary: #2c5fa8;
+  --primary-weak: #eaf1fb;
+  --primary-hover: #244e8c;
+
+  --ok: #1a7f4b;
+  --ok-weak: #e8f5ee;
+  --warn: #9a6700;
+  --warn-weak: #fdf6e3;
+  --danger: #b3261e;
+  --danger-weak: #fdecea;
+  --info: #1f6f8b;
+  --info-weak: #e8f3f7;
+  --violet: #5b4bb7;
+  --violet-weak: #efedfa;
+
+  --radius: 10px;
+  --radius-sm: 6px;
+  --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+}
+
+* { box-sizing: border-box; }
+
+html, body { margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei",
+    "PingFang SC", "Hiragino Sans GB", sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+#app { max-width: 1240px; margin: 0 auto; padding: 24px 20px 60px; }
+
+/* ---------------- 顶部 ---------------- */
+.app-header {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  gap: 20px; flex-wrap: wrap; margin-bottom: 20px;
+}
+.app-title { font-size: 20px; font-weight: 600; letter-spacing: .2px; margin: 0; }
+.app-sub { font-size: 13px; color: var(--text-sub); margin: 4px 0 0; }
+.app-header-right { display: flex; align-items: center; gap: 10px; }
+
+/* ---------------- 通用块 ---------------- */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  margin-bottom: 16px;
+}
+.card-head {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; flex-wrap: wrap; margin-bottom: 14px;
+}
+.card-title { font-size: 15px; font-weight: 600; margin: 0; }
+.card-desc { font-size: 12.5px; color: var(--text-sub); margin: 3px 0 0; }
+.row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.spacer { flex: 1; }
+
+/* ---------------- 步骤导航 ---------------- */
+.steps { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
+.step {
+  display: flex; align-items: center; gap: 9px;
+  padding: 9px 15px; border-radius: 999px;
+  border: 1px solid var(--border); background: var(--surface);
+  color: var(--text-sub); cursor: pointer; font-size: 13px;
+  font-family: inherit; transition: all .15s ease;
+}
+.step:hover { border-color: var(--border-strong); color: var(--text); }
+.step.active {
+  background: var(--primary-weak); border-color: #b9d0ee;
+  color: var(--primary); font-weight: 500;
+}
+.step-index {
+  width: 20px; height: 20px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--bg); font-size: 11.5px; font-variant-numeric: tabular-nums;
+}
+.step.active .step-index { background: var(--primary); color: #fff; }
+
+/* ---------------- 按钮 ---------------- */
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 14px; font-size: 13px; font-family: inherit;
+  border-radius: var(--radius-sm); border: 1px solid var(--border-strong);
+  background: var(--surface); color: var(--text); cursor: pointer;
+  transition: all .15s ease; white-space: nowrap;
+}
+.btn:hover:not(:disabled) { border-color: var(--primary); color: var(--primary); }
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+.btn-primary {
+  background: var(--primary); border-color: var(--primary); color: #fff;
+}
+.btn-primary:hover:not(:disabled) { background: var(--primary-hover); border-color: var(--primary-hover); color: #fff; }
+.btn-danger { color: var(--danger); border-color: #e6b4b0; }
+.btn-danger:hover:not(:disabled) { background: var(--danger-weak); border-color: var(--danger); color: var(--danger); }
+.btn-sm { padding: 4px 10px; font-size: 12px; }
+
+/* ---------------- 表单控件 ---------------- */
+.field { display: flex; flex-direction: column; gap: 5px; min-width: 130px; }
+.field label { font-size: 12px; color: var(--text-sub); }
+input, select {
+  padding: 7px 10px; font-size: 13px; font-family: inherit;
+  border: 1px solid var(--border-strong); border-radius: var(--radius-sm);
+  background: var(--surface); color: var(--text); outline: none;
+}
+input:focus, select:focus { border-color: var(--primary); }
+
+/* ---------------- 表格 ---------------- */
+.table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--radius-sm); }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+thead th {
+  text-align: left; padding: 9px 12px; font-weight: 500; font-size: 12px;
+  color: var(--text-sub); background: #fafbfc; border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+tbody td { padding: 9px 12px; border-bottom: 1px solid #eef0f3; vertical-align: middle; }
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover { background: #fafbfc; }
+tbody tr.selected { background: var(--primary-weak); }
+td.mono, .mono { font-family: var(--mono); font-size: 12.5px; }
+.empty { padding: 26px; text-align: center; color: var(--text-mute); font-size: 13px; }
+
+/* ---------------- 状态徽章 ---------------- */
+.badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 2px 9px; border-radius: 999px;
+  font-size: 12px; white-space: nowrap;
+}
+.badge::before {
+  content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor;
+}
+.s-0 { background: #eef0f3; color: #57606a; }
+.s-1 { background: var(--primary-weak); color: var(--primary); }
+.s-2 { background: var(--info-weak); color: var(--info); }
+.s-3 { background: var(--violet-weak); color: var(--violet); }
+.s-4 { background: var(--ok-weak); color: var(--ok); }
+.s-5 { background: var(--danger-weak); color: var(--danger); }
+.s-6 { background: #eef0f3; color: #8b949e; }
+.s-7 { background: var(--warn-weak); color: var(--warn); }
+
+/* ---------------- 轨迹时间线 ---------------- */
+.timeline { position: relative; padding-left: 20px; margin-top: 4px; }
+.timeline::before {
+  content: ''; position: absolute; left: 5px; top: 6px; bottom: 6px;
+  width: 1px; background: var(--border);
+}
+.tl-item { position: relative; padding: 5px 0 5px 6px; font-size: 13px; }
+.tl-item::before {
+  content: ''; position: absolute; left: -19px; top: 12px;
+  width: 7px; height: 7px; border-radius: 50%;
+  background: #fff; border: 1.5px solid var(--border-strong);
+}
+.tl-item:last-child::before { border-color: var(--primary); background: var(--primary); }
+.tl-time { font-family: var(--mono); font-size: 11.5px; color: var(--text-mute); margin-left: 8px; }
+.tl-op { color: var(--text-sub); font-size: 12px; margin-left: 8px; }
+
+/* ---------------- 结果 / 提示条 ---------------- */
+.result {
+  margin-top: 12px; padding: 11px 14px; border-radius: var(--radius-sm);
+  font-size: 13px; border: 1px solid transparent; word-break: break-word;
+}
+.result.ok { background: var(--ok-weak); border-color: #b7ddc8; color: #14562f; }
+.result.err { background: var(--danger-weak); border-color: #f0c4c0; color: #7d1a15; }
+.result.info { background: var(--primary-weak); border-color: #c3d7f0; color: #234a80; }
+.result.warn { background: var(--warn-weak); border-color: #e8d9a8; color: #6b4a00; }
+.result .result-title { font-weight: 500; margin-bottom: 3px; }
+
+.kv { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+.kv-item {
+  background: #fafbfc; border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 7px 12px; min-width: 96px;
+}
+.kv-label { font-size: 11.5px; color: var(--text-sub); }
+.kv-value { font-size: 15px; font-family: var(--mono); font-weight: 500; }
+
+/* ---------------- 对比区（补发两种方案）---------------- */
+.compare { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 720px) { .compare { grid-template-columns: 1fr; } }
+.compare-box {
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  padding: 14px; display: flex; flex-direction: column; gap: 10px;
+}
+.compare-box h4 { margin: 0; font-size: 13.5px; font-weight: 600; }
+.compare-box p { margin: 0; font-size: 12.5px; color: var(--text-sub); line-height: 1.65; }
+.tag {
+  display: inline-block; padding: 1px 8px; border-radius: 4px;
+  font-size: 11.5px; margin-right: 6px;
+}
+.tag-mq { background: var(--info-weak); color: var(--info); }
+.tag-seata { background: var(--violet-weak); color: var(--violet); }
+
+/* ---------------- 转移表 ---------------- */
+.flow-table { display: flex; flex-direction: column; gap: 6px; }
+.flow-row { display: flex; align-items: center; gap: 8px; font-size: 12.5px; }
+.flow-from { min-width: 96px; }
+
+/* ---------------- 加载 / 空态 ---------------- */
+.loading { color: var(--text-mute); font-size: 13px; padding: 14px 0; }
+.hint { font-size: 12.5px; color: var(--text-mute); }
+.dot-live {
+  width: 7px; height: 7px; border-radius: 50%; background: var(--ok);
+  display: inline-block; margin-right: 5px;
+}
+.dot-dead { background: var(--danger); }

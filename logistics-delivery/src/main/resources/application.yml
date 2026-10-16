@@ -1,0 +1,93 @@
+server:
+  port: 8102
+
+spring:
+  application:
+    name: logistics-delivery
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/community_logistics?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: root
+    password: root
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 6379
+      # 本机 Redis 启用了 requirepass（密码 root），不配会报 NOAUTH
+      password: root
+      database: 0
+      timeout: 3000ms
+  # Neo4j 图数据库：存自提点拓扑，提供距离矩阵与相邻点查询
+  neo4j:
+    uri: bolt://127.0.0.1:7687
+    authentication:
+      username: neo4j
+      # 本机 Neo4j 5.15 的实际密码（与 pickup 服务保持一致，写错会报
+      # AuthenticationException: The client is unauthorized due to authentication failure）
+      password: root1234
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+        namespace: public
+    sentinel:
+      transport:
+        dashboard: 127.0.0.1:8858
+      eager: true
+
+rocketmq:
+  name-server: 127.0.0.1:9876
+  producer:
+    group: GID_DELIVERY_PRODUCER
+    send-message-timeout: 3000
+    retry-times-when-send-failed: 2
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+  global-config:
+    db-config:
+      id-type: auto
+
+feign:
+  sentinel:
+    enabled: true
+  client:
+    config:
+      default:
+        connectTimeout: 2000
+        readTimeout: 5000
+        loggerLevel: basic
+
+# 演示用：缩短超时升级延迟，便于观察
+demo:
+  escalate:
+    delay-level: 4
+
+
+# ============================================================
+# Seata 分布式事务（AT 模式）
+#
+# 为什么用 registry.type=file + grouplist 直连，而不是走 Nacos 服务发现：
+#   seata-server 注册到 Nacos 的实例是容器内网 IP（172.20.0.3:9000），
+#   宿主机实测不可达（TimeoutError）；而 Docker 已把 9000 映射到宿主机，
+#   因此直连 127.0.0.1:9000 才是本地开发最稳的方式。
+# ============================================================
+seata:
+  enabled: true
+  application-id: ${spring.application.name}
+  tx-service-group: default_tx_group
+  service:
+    vgroup-mapping:
+      default_tx_group: default
+    grouplist:
+      default: 127.0.0.1:9000
+  registry:
+    type: file
+  config:
+    type: file
+
+logging:
+  level:
+    com.community.delivery: debug
+    org.springframework.data.neo4j: info

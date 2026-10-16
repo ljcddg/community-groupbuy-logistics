@@ -1,0 +1,49 @@
+server:
+  port: 8104
+
+spring:
+  application:
+    name: logistics-pickup
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/community_logistics?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: root
+    password: root
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 6379
+      # 本机 Redis 启用了 requirepass（密码 root），不配会报 NOAUTH
+      password: root
+      database: 0
+      timeout: 3000ms
+  neo4j:
+    uri: bolt://127.0.0.1:7687
+    authentication:
+      username: neo4j
+      password: root1234
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+        namespace: public
+    sentinel:
+      transport:
+        dashboard: 127.0.0.1:8858
+      eager: true
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+  global-config:
+    db-config:
+      id-type: auto
+
+feign:
+  sentinel:
+    enabled: true
+
+logging:
+  level:
+    com.community.pickup: debug
+    org.springframework.data.neo4j: info

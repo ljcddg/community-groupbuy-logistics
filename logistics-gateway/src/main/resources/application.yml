@@ -1,0 +1,67 @@
+server:
+  # 注意：默认不用 8080 —— 本机 8080 被 steamwebhelper.exe 长期占用，
+  # 网关改到 8090，避免启动时报 "Port 8080 was already in use"。
+  port: 7000
+
+spring:
+  application:
+    name: logistics-gateway
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 6379
+      # 本机 Redis 启用了 requirepass（密码 root），不配会报 NOAUTH
+      password: root
+      database: 0
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+        namespace: public
+    gateway:
+      # 统一路由：按服务名负载均衡转发（lb:// + Nacos 服务发现）
+      routes:
+        - id: order
+          uri: lb://logistics-order
+          predicates:
+            - Path=/api/order/**
+          filters:
+            - StripPrefix=1
+        - id: delivery
+          uri: lb://logistics-delivery
+          predicates:
+            - Path=/api/delivery/**
+          filters:
+            - StripPrefix=1
+        - id: warehouse
+          uri: lb://logistics-warehouse
+          predicates:
+            - Path=/api/stock/**
+          filters:
+            - StripPrefix=1
+        - id: pickup
+          uri: lb://logistics-pickup
+          predicates:
+            - Path=/api/pickup/**
+          filters:
+            - StripPrefix=1
+      discovery:
+        locator:
+          enabled: false   # 关闭自动路由，显式声明更可控、更安全
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowed-origin-patterns: "*"
+            allowed-methods: "*"
+            allowed-headers: "*"
+            allow-credentials: true
+
+# 网关鉴权白名单
+gateway:
+  auth:
+    whitelist: /auth/**,/actuator/**,/favicon.ico,/api/delivery/status/**,/api/order/list,/api/delivery/list,/api/pickup/list
+
+logging:
+  level:
+    com.community.gateway: debug
+    org.springframework.cloud.gateway: info

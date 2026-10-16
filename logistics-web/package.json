@@ -1,0 +1,19 @@
+{
+  "name": "logistics-web",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "社区团购物流配送系统 - 业务流演示前端",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview --port 4173"
+  },
+  "dependencies": {
+    "vue": "^3.4.21"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.0.4",
+    "vite": "^5.2.11"
+  }
+}
